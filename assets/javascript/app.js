@@ -50,6 +50,7 @@ const getGifs = function getGifs(topicName) {
   })
 }
 
+// Put the gifs on the page
 const setGifs = function setGifs(response) {
   $('#gifs').html('')
   response.data.forEach((gif) => {
@@ -69,7 +70,6 @@ const setGifs = function setGifs(response) {
     $('#gifs').append(div)
   })
 }
-// ======================
 
 // ======================
 // Logic
@@ -92,6 +92,7 @@ $('.topicButton').on('click', function (event) {
   getGifs(topicName)
 })
 
+// Handling the clicking of the gif and the animation state
 $('#gifs').on('click', '.gif', function (event) {
   console.log($(this))
   if ($(this).attr('data-state') === 'still') {
