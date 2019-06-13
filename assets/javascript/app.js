@@ -36,7 +36,7 @@ const getGifs = function getGifs(topicName) {
   const params = {
     api_key: apiKey,
     q: topicName,
-    limit: 25,
+    limit: 10,
     offset: 0,
     rating: 'g',
     lang: 'en'
