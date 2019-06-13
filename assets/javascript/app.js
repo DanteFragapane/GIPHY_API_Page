@@ -53,14 +53,18 @@ const getGifs = function getGifs(topicName) {
 const setGifs = function setGifs(response) {
   $('#gifs').html('')
   response.data.forEach((gif) => {
+    console.log(gif)
     const div = $('<div>', {
-      class: 'gif'
+      class: 'gif',
+      'data-state': 'still',
+      'data-still': gif.images.fixed_height_still.url,
+      'data-animate': gif.images.fixed_height.url
     })
     div.append($('<h3>', {
       text: 'Rating: ' + gif.rating
     }))
     div.append($('<img>', {
-      src: gif.images.fixed_height.url
+      src: gif.images.fixed_height_still.url
     }))
     $('#gifs').append(div)
   })
@@ -86,4 +90,17 @@ $('.topicButton').on('click', function (event) {
   console.log($(this))
   const topicName = $(this).attr('id')
   getGifs(topicName)
+})
+
+$('#gifs').on('click', '.gif', function (event) {
+  console.log($(this))
+  if ($(this).attr('data-state') === 'still') {
+    const animUrl = $(this).attr('data-animate')
+    $(this).children().attr('src', animUrl)
+    $(this).attr('data-state', 'animate')
+  } else {
+    const stillUrl = $(this).attr('data-still')
+    $(this).children().attr('src', stillUrl)
+    $(this).attr('data-state', 'still')
+  }
 })
