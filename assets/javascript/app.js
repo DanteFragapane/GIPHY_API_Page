@@ -46,7 +46,23 @@ const getGifs = function getGifs(topicName) {
     url: url + $.param(params),
     method: 'GET'
   }).then((response) => {
-    return response
+    setGifs(response)
+  })
+}
+
+const setGifs = function setGifs(response) {
+  $('#gifs').html('')
+  response.data.forEach((gif) => {
+    const div = $('<div>', {
+      class: 'gif'
+    })
+    div.append($('<h3>', {
+      text: 'Rating: ' + gif.rating
+    }))
+    div.append($('<img>', {
+      src: gif.images.fixed_height.url
+    }))
+    $('#gifs').append(div)
   })
 }
 // ======================
