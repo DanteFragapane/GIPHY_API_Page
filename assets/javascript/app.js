@@ -20,7 +20,6 @@ const initializeButtons = function initializeButtons(topicArray) {
     })
     buttons.append(button)
   })
-  console.log(buttons)
   $('#topics').append(buttons)
 }
 
@@ -28,6 +27,7 @@ const initializeButtons = function initializeButtons(topicArray) {
 const addTopic = function addTopic(topicName, topics) {
   if (!topics.includes(topicName)) {
     topics.push(topicName)
+    return topics
   } else return false
 }
 
@@ -41,8 +41,7 @@ const getGifs = function getGifs(topicName) {
     rating: 'g',
     lang: 'en'
   }
-  console.log($.param(params))
-  const ajax = $.ajax({
+  $.ajax({
     url: url + $.param(params),
     method: 'GET'
   }).then((response) => {
@@ -54,7 +53,6 @@ const getGifs = function getGifs(topicName) {
 const setGifs = function setGifs(response) {
   $('#gifs').html('')
   response.data.forEach((gif) => {
-    console.log(gif)
     const div = $('<div>', {
       class: 'gif',
       'data-state': 'still',
@@ -82,19 +80,20 @@ $('form').on('submit', (event) => {
   event.preventDefault()
 
   const topicName = $('#topicName').val().trim().toLowerCase()
-  addTopic(topicName, topics)
-  initializeButtons(topics)
+  let topicBool = addTopic(topicName, topics) // This variable will hold either the array of topics, OR will be "false"
+  if (topicBool !== false) {
+    topics = topicBool
+    initializeButtons(topics)
+  }
 })
 
-$('.topicButton').on('click', function (event) {
-  console.log($(this))
+$('#topics').on('click', '.topicButton', function (event) {
   const topicName = $(this).attr('id')
   getGifs(topicName)
 })
 
 // Handling the clicking of the gif and the animation state
 $('#gifs').on('click', '.gif', function (event) {
-  console.log($(this))
   if ($(this).attr('data-state') === 'still') {
     const animUrl = $(this).attr('data-animate')
     $(this).children().attr('src', animUrl)
